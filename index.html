@@ -4,6 +4,7 @@
     <title>Tabulous</title>
     <script type="text/javascript" src="bower_components/lazy.js/lazy.js"></script>
     <script type="text/javascript" src="bower_components/teoria/dist/teoria.min.js"></script>
+    <script type="text/javascript" src="bower_components/jquery/dist/jquery.min.js"></script>
     <script type="text/javascript" src="scripts/tabulous.js"></script>
     <script type="text/javascript" src="scripts/getters.js"></script>
     <script type="text/javascript" src="scripts/printers.js"></script>
@@ -13,12 +14,8 @@
     <h1>Tabulous</h1>
     <script type="text/javascript">
     // create instance
-    var tabulous = new Tabulous({ root:'D' });
-        tabulous.getBoard().print();
-        tabulous.getStringScale('D', 13);
-        tabulous.getStringScale('D', 6);
+    var tabulous = new Tabulous();
     </script>
-
 </body>
 
 </html>

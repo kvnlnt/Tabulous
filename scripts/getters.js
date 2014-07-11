@@ -1,33 +1,46 @@
-Tabulous.prototype.getBoard = function(){
+Tabulous.prototype.getTuning = function(){
 
-	var that        = this;
-	var fretRange   = Lazy.range(0, this.settings.frets);
-	var stringRange = Lazy.range(0, this.settings.tuning.length);
+	var getNote = function(note){ return teoria.note(note); };
+	var tuning  = Lazy(this.settings.tuning).map(getNote);
 
-	this.board = Lazy(fretRange).map(function(fret, fretI){
-		return Lazy(stringRange).map(function(string, stringI){
-			return {
-				note:that.settings.tuning[stringI]
-			};
-		}).value().reverse();
-	}).value();
-
-	return this;
+	return tuning;
 
 };
 
-Tabulous.prototype.getStringScale = function(root, frets){
+Tabulous.prototype.getBoard = function(){
 
-	var octaves   = Lazy.range(0, Math.ceil(frets/12) - 1) || [0];
-	var chromatic = [['C'], ['C#','Db'], ['D'], ['D#','Eb'], ['E'], ['F'], ['F#','Gb'], ['G'], ['G#','Ab'], ['A'], ['A#','Bb'], ['B']];
-	var noteIndex = Lazy(chromatic).map(function(note){ return note[0]; }).indexOf(root.split('/')[0]);
-	var newScale  = chromatic.concat(chromatic.splice(0, noteIndex));
+	var that   = this;
+	var tuning = this.tuning;
+
+	// loop
+	var board = Lazy(tuning)
+				.map(function(note){ return that.getString(note); })
+				.value()
+				.reverse();
+
+	return board;
+
+};
+
+Tabulous.prototype.getString = function(note){
+
+	var fretRange = Lazy.range(0, this.settings.frets);
+	var string    = [note];
 	
-	// octave scale
-	Lazy(octaves).each(function(){ newScale = newScale.concat(newScale); });
+	Lazy(fretRange).each(function(fret, i){	
+		string.push(teoria.note.fromKey(string[i].key() + 1));
+	});
 
-	var scale = Lazy(newScale).first(frets).value();
+	return string;
 
-	return scale;
+};
+
+Tabulous.prototype.getTab = function(){
+
+	var tab = {};
+	var notes = teoria.chord(this.settings.root + this.settings.type).notes().toString();
+	console.log(notes);
+
+	return tab;
 
 };
