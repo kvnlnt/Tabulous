@@ -9,14 +9,17 @@ Tabulous.prototype.getTuning = function(){
 
 Tabulous.prototype.getBoard = function(){
 
-	var that   = this;
-	var tuning = this.tuning;
+	var frets   = Lazy.range(0, this.settings.frets);
+	var strings = this.tuning;
+	var board   = [];
 
-	// loop
-	var board = Lazy(tuning)
-				.map(function(note){ return that.getString(note); })
-				.value()
-				.reverse();
+	Lazy(frets).each(function(fret){
+		board[fret] = [];
+		strings.each(function(string, s){ 
+			var note = teoria.note.fromKey(string.key() + fret);
+			board[fret][s] = note;
+		});
+	});
 
 	return board;
 
@@ -35,11 +38,33 @@ Tabulous.prototype.getString = function(note){
 
 };
 
+Tabulous.prototype.getChord = function(){
+
+	var chord = teoria.note(this.settings.root).chord(this.settings.type);
+	return chord;
+
+};
+
+Tabulous.prototype.getNotes = function(chord){
+
+	var notes = Lazy(this.chord.notes()).map(function(note){ return note.name() });
+	return notes;
+
+};
+
 Tabulous.prototype.getTab = function(){
 
-	var tab = {};
-	var notes = teoria.chord(this.settings.root + this.settings.type).notes().toString();
-	console.log(notes);
+	var frets   = Lazy.range(0, this.settings.frets);
+	var strings = this.tuning;
+	var tab     = [];
+
+	Lazy(frets).each(function(fret){
+		tab[fret] = [];
+		strings.each(function(string, s){ 
+			var note = teoria.note.fromKey(string.key() + fret);
+			tab[fret][s] = note;
+		});
+	});
 
 	return tab;
 

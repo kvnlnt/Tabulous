@@ -17,7 +17,7 @@ var Tabulous = function(options){
 	    defaults.root   = 'C';
 	    defaults.type   = '';
 	    defaults.tuning = this.TUNING.GUITAR.STANDARD;
-	    defaults.frets  = 24;
+	    defaults.frets  = 12;
 
     // SETTINGS
     
@@ -25,9 +25,11 @@ var Tabulous = function(options){
 
     // INIT
 
-    	this.tuning   = this.getTuning();
-    	this.board    = this.getBoard();
-    	// this.tab      = this.getTab();
+    	this.tuning = this.getTuning();
+    	this.board  = this.getBoard();
+    	this.chord  = this.getChord();
+    	this.notes  = this.getNotes();
+    	this.tab    = this.getTab();
 
 };
 
