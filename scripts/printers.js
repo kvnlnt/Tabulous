@@ -1,4 +1,4 @@
-Tabulous.prototype.printTab = function(){
+Tabulous.prototype.printBoardChordNotes = function(){
 
 	var div = $("<pre>");
 	var chordNotes = Lazy(this.chord.notes()).map(function(note){ return note.name() + note.accidental(); });
@@ -6,7 +6,7 @@ Tabulous.prototype.printTab = function(){
 	// body print
 	$("body").append(div);
 	div.append("<h2>Tab</h2>");
-	Lazy(this.tab).each(function(string, s){
+	Lazy(this.board).each(function(string, s){
 		div.append('<br/>');
 		Lazy(string).each(function(fret, f){
 			var noteName = string[f].name() + string[f].accidental();

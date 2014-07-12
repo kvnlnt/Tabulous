@@ -25,11 +25,11 @@ var Tabulous = function(options){
 
     // INIT
 
-    	this.tuning = this.getTuning();
-    	this.board  = this.getBoard();
-    	this.chord  = this.getChord();
-    	this.notes  = this.getNotes();
-    	this.tab    = this.getTab();
+    	this.tuning          = this.getTuning();
+    	this.board           = this.getBoard();
+    	this.chord           = this.getChord();
+    	this.notes           = this.getNotes();
+    	this.tabs            = this.getTabs(4,5);
 
 };
 
