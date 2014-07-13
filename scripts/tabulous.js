@@ -18,6 +18,7 @@ var Tabulous = function(options){
 	    defaults.type   = '';
 	    defaults.tuning = this.TUNING.GUITAR.STANDARD;
 	    defaults.frets  = 12;
+	    defaults.span   = 5;
 
     // SETTINGS
     
@@ -29,7 +30,9 @@ var Tabulous = function(options){
     	this.board           = this.getBoard();
     	this.chord           = this.getChord();
     	this.notes           = this.getNotes();
-    	this.tabs            = this.getTabs(4,5);
+    	this.tabs            = this.getTabs(0);
+
+    	console.log(this.tabs);
 
 };
 

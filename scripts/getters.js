@@ -52,16 +52,15 @@ Tabulous.prototype.getNotes = function(chord){
 
 };
 
-Tabulous.prototype.getTabs = function(startingFret, searchFretSpan){
+Tabulous.prototype.getTabs = function(startingFret, tabs){
 
-	var searchFretSpan = searchFretSpan || 5;
+	var tabs           = tabs || [];
 	var startingFret   = startingFret || 0;
 	var frettedStrings = []; // add strings as they are fretted
-	var frets          = Lazy.range(startingFret, startingFret + searchFretSpan);
+	var frets          = Lazy.range(startingFret, startingFret + this.settings.span);
 	var strings        = Lazy(this.tuning);
 	var chordNotes     = Lazy(this.chord.notes()).map(function(note){ return note.name() + note.accidental(); });
-	var tracer         = strings.map(function(){ return -1 }).toArray(); // prepopulated tab array of none found
-	var lastFretFound  = null;
+	var tab            = strings.map(function(){ return -1 }).toArray(); // prepopulated tab array of none found
 	
 	// loop frets
 	frets.each(function(fret, fretsTraversed){
@@ -77,19 +76,21 @@ Tabulous.prototype.getTabs = function(startingFret, searchFretSpan){
 
 			if(true === isChordNote && false === isFretted){
 				frettedStrings.push(stringNumber);
-				tracer[stringNumber] = fret;
+				tab[stringNumber] = fret;
 			}
-
-			// console.log("fret-",fret, "trav-", fretsTraversed, "string-", string.toString(), "stringNum-", stringNumber);
 
 		});
 
-		// console.log(frettedStrings);
-
 	});
 
-	console.log(tracer);
+	// get last fret used and determine if to continue
+	var lastFret = Lazy(tab).compact().sortBy().last();
+	var cont = (startingFret + this.settings.span) < this.settings.frets;
 
-	// return tabs;
+	// add tab
+	tabs.push(tab);
+
+	// console.log(tab, lastFret, cont);
+	return true === cont ? this.getTabs(lastFret, tabs) : tabs;
 
 };
