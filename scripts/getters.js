@@ -84,13 +84,20 @@ Tabulous.prototype.getTabs = function(startingFret, tabs){
 	});
 
 	// get last fret used and determine if to continue
-	var lastFret = Lazy(tab).compact().sortBy().last();
-	var cont = (startingFret + this.settings.span) < this.settings.frets;
+	var prevLastFret = Lazy(Lazy(tabs).last()).compact().sortBy().last();
+	var lastFret     = Lazy(tab).compact().sortBy().last();
+	var startFret    = prevLastFret < 12 && lastFret > 12 ? 12 : lastFret;
+	var cont         = (startingFret + this.settings.span) < this.settings.frets;
+	// var startHere = lastFret > 12 &&
+
+	// if last fret just passed fret 12 and cont is true, set last fret to 12
+
+	// console.log(lastFret, cont, prevLastFret);
 
 	// add tab
 	tabs.push(tab);
 
 	// console.log(tab, lastFret, cont);
-	return true === cont ? this.getTabs(lastFret, tabs) : tabs;
+	return true === cont ? this.getTabs(startFret, tabs) : tabs;
 
 };
