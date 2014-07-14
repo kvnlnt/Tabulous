@@ -47,7 +47,7 @@ Tabulous.prototype.getChord = function(){
 
 Tabulous.prototype.getNotes = function(chord){
 
-	var notes = Lazy(this.chord.notes()).map(function(note){ return note.name() });
+	var notes = Lazy(this.chord.notes()).map(function(note){ return note; });
 	return notes;
 
 };
@@ -59,7 +59,7 @@ Tabulous.prototype.getTabs = function(startingFret, tabs){
 	var frettedStrings = []; // add strings as they are fretted
 	var frets          = Lazy.range(startingFret, startingFret + this.settings.span);
 	var strings        = Lazy(this.tuning);
-	var chordNotes     = Lazy(this.chord.notes()).map(function(note){ return note.name() + note.accidental(); });
+	var chordNotes     = Lazy(this.notes.toArray()).map(function(note){ return note.name() + note.accidental(); }).toArray();
 	var tab            = strings.map(function(){ return -1 }).toArray(); // prepopulated tab array of none found
 	
 	// loop frets
@@ -69,8 +69,9 @@ Tabulous.prototype.getTabs = function(startingFret, tabs){
 		strings.each(function(string, stringNumber){
 
 			var note          = teoria.note.fromKey(string.key() + fret);
+			var enharmName 	  = note.enharmonics(true).length ? note.enharmonics(true)[0].name() + note.enharmonics(true)[0].accidental() : '';
 			var noteName      = note.name() + note.accidental();
-			var isChordNote   = chordNotes.contains(noteName);
+			var isChordNote   = Lazy(chordNotes).contains(noteName) || Lazy(chordNotes).contains(enharmName);
 			var isFretted     = Lazy(frettedStrings).contains(stringNumber);
 			var lastFretFound = true === isFretted ? fret : lastFretFound;
 
@@ -84,15 +85,12 @@ Tabulous.prototype.getTabs = function(startingFret, tabs){
 	});
 
 	// get last fret used and determine if to continue
-	var prevLastFret = Lazy(Lazy(tabs).last()).compact().sortBy().last();
-	var lastFret     = Lazy(tab).compact().sortBy().last();
-	var startFret    = prevLastFret < 12 && lastFret > 12 ? 12 : lastFret;
-	var cont         = (startingFret + this.settings.span) < this.settings.frets;
-	// var startHere = lastFret > 12 &&
+	var prevLastFret = Lazy(Lazy(tabs).last()).compact().sortBy().last(); // get last fret of prev tab
+	var lastFret     = Lazy(tab).compact().sortBy().last(); // get current last fret
+	var startFret    = prevLastFret < 12 && lastFret > 12 ? 12 : lastFret; // if we just passed the 12th fret, reset algo starting fret
+	var cont         = (startingFret + this.settings.span) < this.settings.frets; // continue if we have more frets to walk
 
-	// if last fret just passed fret 12 and cont is true, set last fret to 12
-
-	// console.log(lastFret, cont, prevLastFret);
+	// console.log(prevLastFret, lastFret);
 
 	// add tab
 	tabs.push(tab);
