@@ -1,7 +1,7 @@
 module.exports = {
     dist: {
       files: {
-        'dist/pickl.min.js': ['dist/pickl.js']
+        'dist/tabulous.min.js': ['dist/tabulous.js']
       }
     }
 }
