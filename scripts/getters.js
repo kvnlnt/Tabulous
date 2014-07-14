@@ -52,15 +52,16 @@ Tabulous.prototype.getNotes = function(chord){
 
 };
 
-Tabulous.prototype.getTabs = function(startingFret, tabs){
+Tabulous.prototype.getVoicings = function(startingFret, voicings){
 
-	var tabs           = tabs || [];
+	var voicings       = voicings || [];
 	var startingFret   = startingFret || 0;
 	var frettedStrings = []; // add strings as they are fretted
 	var frets          = Lazy.range(startingFret, startingFret + this.settings.span);
 	var strings        = Lazy(this.tuning);
 	var chordNotes     = Lazy(this.notes.toArray()).map(function(note){ return note.name() + note.accidental(); }).toArray();
 	var tab            = strings.map(function(){ return -1 }).toArray(); // prepopulated tab array of none found
+	var tabNotes       = [];
 	
 	// loop frets
 	frets.each(function(fret, fretsTraversed){
@@ -78,6 +79,7 @@ Tabulous.prototype.getTabs = function(startingFret, tabs){
 			if(true === isChordNote && false === isFretted){
 				frettedStrings.push(stringNumber);
 				tab[stringNumber] = fret;
+				tabNotes[stringNumber] = note;
 			}
 
 		});
@@ -85,17 +87,18 @@ Tabulous.prototype.getTabs = function(startingFret, tabs){
 	});
 
 	// get last fret used and determine if to continue
-	var prevLastFret = Lazy(Lazy(tabs).last()).compact().sortBy().last(); // get last fret of prev tab
+	var prevLastFret = Lazy(Lazy(voicings).last()).compact().sortBy().last(); // get last fret of prev tab
 	var lastFret     = Lazy(tab).compact().sortBy().last(); // get current last fret
 	var startFret    = prevLastFret < 12 && lastFret > 12 ? 12 : lastFret; // if we just passed the 12th fret, reset algo starting fret
 	var cont         = (startingFret + this.settings.span) < this.settings.frets; // continue if we have more frets to walk
 
-	// console.log(prevLastFret, lastFret);
-
 	// add tab
-	tabs.push(tab);
+	voicings.push({
+		voicing:tab,
+		notes:tabNotes
+	});
 
 	// console.log(tab, lastFret, cont);
-	return true === cont ? this.getTabs(startFret, tabs) : tabs;
+	return true === cont ? this.getVoicings(startFret, voicings) : voicings;
 
 };

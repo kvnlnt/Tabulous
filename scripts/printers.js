@@ -37,19 +37,22 @@ Tabulous.prototype.printBoard = function(){
 Tabulous.prototype.printBoardChordNotes = function(){
 
 	var div        = $("<pre>");
-	var chordNotes = Lazy(this.notes.toArray()).map(function(note){ return note.name() + note.accidental(); }).toArray();
+	var chordNotes = Lazy(this.notes.toArray()).map(function(note){ return note.name() + note.accidental(); });
 
 	// body print
 	$("body").append(div);
 	div.append("<h2>Tab</h2>");
 	Lazy(this.board).each(function(string, s){
 		div.append('<br/>');
+		div.append(s + '	');
 		Lazy(string).each(function(fret, f){
-			var note     = string[f].name() + string[f].accidental();
-			var enharm   = string[f].enharmonics(true).length ? string[f].enharmonics(true)[0].name() + string[f].enharmonics(true)[0].accidental() : '';
-			var inChord  = Lazy(chordNotes).contains(note) || Lazy(chordNotes).contains(enharm);
-			var notation = true === inChord ? note : 'x';
-			div.append(notation + '		');
+
+			var note          = string[f];
+			var enharmName 	  = note.enharmonics(true).length ? note.enharmonics(true)[0].name() + note.enharmonics(true)[0].accidental() : '';
+			var noteName      = note.name() + note.accidental();
+			var isChordNote   = Lazy(chordNotes).contains(noteName) || Lazy(chordNotes).contains(enharmName);
+			var notation = true === isChordNote ? noteName + '/' + enharmName : '*';
+			div.append(notation + '	');
 		});
 		div.append("<br/>");
 	});
