@@ -21,7 +21,7 @@ var Tabulous = function(options){
 
     // SETTINGS
     
-    	this.settings = Lazy({}).assign(options).defaults(defaults).value();
+    	this.settings = _.extend({}, defaults, options);
 
     // INIT
 
@@ -30,7 +30,7 @@ var Tabulous = function(options){
 };;Tabulous.prototype.getTuning = function(){
 
 	var getNote = function(note){ return teoria.note(note); };
-	var tuning  = Lazy(this.settings.tuning).map(getNote);
+	var tuning  = _.map(this.settings.tuning, getNote);
 
 	return tuning;
 
@@ -38,32 +38,18 @@ var Tabulous = function(options){
 
 Tabulous.prototype.getBoard = function(){
 
-	var frets   = Lazy.range(0, this.settings.frets);
 	var strings = this.tuning;
 	var board   = [];
 
-	Lazy(frets).each(function(fret){
+	_.times(this.settings.frets, function(fret){
 		board[fret] = [];
-		strings.each(function(string, s){ 
+		_.each(strings, function(string, s){ 
 			var note = teoria.note.fromKey(string.key() + fret);
 			board[fret][s] = note;
 		});
 	});
 
 	return board;
-
-};
-
-Tabulous.prototype.getString = function(note){
-
-	var fretRange = Lazy.range(0, this.settings.frets);
-	var string    = [note];
-	
-	Lazy(fretRange).each(function(fret, i){	
-		string.push(teoria.note.fromKey(string[i].key() + 1));
-	});
-
-	return string;
 
 };
 
@@ -76,7 +62,7 @@ Tabulous.prototype.getChord = function(){
 
 Tabulous.prototype.getNotes = function(chord){
 
-	var notes = Lazy(this.chord.notes()).map(function(note){ return note; });
+	var notes = _.map(this.chord.notes(), function(note){ return note; });
 	return notes;
 
 };
@@ -86,23 +72,23 @@ Tabulous.prototype.getVoicings = function(startingFret, voicings){
 	var voicings       = voicings || [];
 	var startingFret   = startingFret || 0;
 	var frettedStrings = []; // add strings as they are fretted
-	var frets          = Lazy.range(startingFret, startingFret + this.settings.span);
-	var strings        = Lazy(this.tuning);
-	var chordNotes     = Lazy(this.notes.toArray()).map(function(note){ return note.name() + note.accidental(); }).toArray();
-	var tab            = strings.map(function(){ return -1 }).toArray(); // prepopulated tab array of none found
-	var data           = strings.map(function(){ return null }).toArray();;
+	var frets          = _.range(startingFret, startingFret + this.settings.span);
+	var strings        = this.tuning;
+	var chordNotes     = _.map(this.notes, function(note){ return note.name() + note.accidental(); });
+	var tab            = _.map(strings, function(){ return -1 }); // prepopulated tab array of none found
+	var data           = _.map(strings, function(){ return null });
 	
 	// loop frets
-	frets.each(function(fret, fretsTraversed){
+	_.each(frets, function(fret, fretsTraversed){
 
 		// loop strings
-		strings.each(function(string, stringNumber){
+		_.each(strings, function(string, stringNumber){
 
 			var note          = teoria.note.fromKey(string.key() + fret);
 			var enharmName 	  = note.enharmonics(true).length ? note.enharmonics(true)[0].name() + note.enharmonics(true)[0].accidental() : '';
 			var noteName      = note.name() + note.accidental();
-			var isChordNote   = Lazy(chordNotes).contains(noteName) || Lazy(chordNotes).contains(enharmName);
-			var isFretted     = Lazy(frettedStrings).contains(stringNumber);
+			var isChordNote   = _.contains(chordNotes, noteName) || _.contains(chordNotes, enharmName);
+			var isFretted     = _.contains(frettedStrings, stringNumber);
 			var lastFretFound = true === isFretted ? fret : lastFretFound;
 
 			if(true === isChordNote && false === isFretted){
@@ -116,8 +102,9 @@ Tabulous.prototype.getVoicings = function(startingFret, voicings){
 	});
 
 	// get last fret used and determine if to continue
-	var prevLastFret = Lazy(Lazy(voicings).last()).compact().sortBy().last(); // get last fret of prev tab
-	var lastFret     = Lazy(tab).compact().sortBy().last(); // get current last fret
+	// var prevLastFret = Lazy(Lazy(voicings).last()).compact().sortBy().last(); // get last fret of prev tab
+	var prevLastFret = _.chain(_.last(voicings)).compact().sortBy().last();
+	var lastFret     = _.chain(tab).compact().sortBy().last(); // get current last fret
 	var startFret    = prevLastFret < 12 && lastFret > 12 ? 12 : lastFret; // if we just passed the 12th fret, reset algo starting fret
 	var cont         = (startingFret + this.settings.span) < this.settings.frets; // continue if we have more frets to walk
 
