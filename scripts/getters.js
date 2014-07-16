@@ -74,8 +74,8 @@ Tabulous.prototype.getVoicings = function(startingFret, voicings){
 
 	// get last fret used and determine if to continue
 	// var prevLastFret = Lazy(Lazy(voicings).last()).compact().sortBy().last(); // get last fret of prev tab
-	var prevLastFret = _.chain(_.last(voicings)).compact().sortBy().last();
-	var lastFret     = _.chain(tab).compact().sortBy().last(); // get current last fret
+	var prevLastFret = voicings.length > 0 ? _.chain(_.last(voicings).voicing).compact().sortBy().last().value() : 0;
+	var lastFret     = _.chain(tab).compact().sortBy().last().value() // get current last fret
 	var startFret    = prevLastFret < 12 && lastFret > 12 ? 12 : lastFret; // if we just passed the 12th fret, reset algo starting fret
 	var cont         = (startingFret + this.settings.span) < this.settings.frets; // continue if we have more frets to walk
 
