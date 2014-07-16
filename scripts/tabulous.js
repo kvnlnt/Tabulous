@@ -21,7 +21,7 @@ var Tabulous = function(options){
 
     // SETTINGS
     
-    	this.settings = Lazy({}).assign(options).defaults(defaults).value();
+    	this.settings = _.extend({}, defaults, options);
 
     // INIT
 

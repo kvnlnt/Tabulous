@@ -6,8 +6,8 @@ Tabulous.prototype.printBoard = function(){
 	$("body").append(div);
 	div.append("<h2>Board</h2>");
 
-	Lazy(this.board).each(function(string, s){
-		Lazy(string).each(function(fret, f){
+	_.each(this.board, function(string, s){
+		_.each(string, function(fret, f){
 			var enharm = string[f].enharmonics(true).length ? '/' + string[f].enharmonics(true).toString() : '';
 			div.append(string[f].toString() + enharm + '		');
 		});
@@ -15,8 +15,8 @@ Tabulous.prototype.printBoard = function(){
 	});
 
 	// console
-	Lazy(this.board).each(function(string, s){
-		Lazy(string).each(function(fret, f){
+	_.each(this.board, function(string, s){
+		_.each(string, function(fret, f){
 
 			var enharm = string[f].enharmonics(true).length ? string[f].enharmonics(true).toString() : 'x';
 
@@ -37,20 +37,20 @@ Tabulous.prototype.printBoard = function(){
 Tabulous.prototype.printBoardChordNotes = function(){
 
 	var div        = $("<pre>");
-	var chordNotes = Lazy(this.notes.toArray()).map(function(note){ return note.name() + note.accidental(); });
+	var chordNotes = _.map(this.notes, function(note){ return note.name() + note.accidental(); });
 
 	// body print
 	$("body").append(div);
 	div.append("<h2>Tab</h2>");
-	Lazy(this.board).each(function(string, s){
+	_.each(this.board, function(string, s){
 		div.append('<br/>');
 		div.append(s + '	');
-		Lazy(string).each(function(fret, f){
+		_.each(string, function(fret, f){
 
 			var note          = string[f];
 			var enharmName 	  = note.enharmonics(true).length ? note.enharmonics(true)[0].name() + note.enharmonics(true)[0].accidental() : '';
 			var noteName      = note.name() + note.accidental();
-			var isChordNote   = Lazy(chordNotes).contains(noteName) || Lazy(chordNotes).contains(enharmName);
+			var isChordNote   = _.contains(chordNotes, noteName) || _.contains(chordNotes, enharmName);
 			var notation = true === isChordNote ? noteName + '/' + enharmName : '*';
 			div.append(notation + '	');
 		});
