@@ -26,7 +26,7 @@ Tabulous.prototype.getBoard = function(){
 
 Tabulous.prototype.getChord = function(){
 
-	var chord = teoria.note(this.settings.root).chord(this.settings.type);
+	var chord = teoria.chord(this.settings.root+this.settings.type);
 	return chord;
 
 };
