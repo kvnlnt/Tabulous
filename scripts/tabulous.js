@@ -14,14 +14,20 @@ var Tabulous = function(options){
 
 	};
 
+	this.ALGORITHM = {
+		CAGED:'CAGED',
+		EXHAUSTIVE:'EXHAUSTIVE'
+	};
+
 	// DEFAULT OPTIONS
 
-	    var defaults    = {};
-	    defaults.root   = 'a';
-	    defaults.type   = 'm';
-	    defaults.tuning = this.TUNING.MANDOLIN.STANDARD;
-	    defaults.frets  = 24;
-	    defaults.span   = 5;
+	    var defaults       = {};
+	    defaults.root      = 'C';
+	    defaults.type      = 'maj11';
+	    defaults.tuning    = this.TUNING.GUITAR.STANDARD;
+	    defaults.frets     = 24;
+	    defaults.span      = 5;
+	    defaults.algorithm = this.ALGORITHM.CAGED;
 
     // SETTINGS
     

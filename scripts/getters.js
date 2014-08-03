@@ -33,12 +33,26 @@ Tabulous.prototype.getChord = function(){
 
 Tabulous.prototype.getNotes = function(chord){
 
-	var notes = _.map(this.chord.notes(), function(note){ return note; });
+	// var notes = _.map(this.chord.notes(), function(note){ return note; });
+	var notes = this.chord.notes();
 	return notes;
 
 };
 
 Tabulous.prototype.getVoicings = function(startingFret, voicings){
+
+	switch(this.settings.algorithm) {
+		case 'CAGED':
+			return this.getVoicingsCAGED(startingFret, voicings);
+			break;
+		case 'EXHAUSTIVE':
+			return this.getVoicingsExhaustive(startingFret, voicings);
+			break;
+	};
+
+};
+
+Tabulous.prototype.getVoicingsCAGED = function(startingFret, voicings){
 
 	var voicings       = voicings || [];
 	var startingFret   = startingFret || 0;
@@ -83,6 +97,6 @@ Tabulous.prototype.getVoicings = function(startingFret, voicings){
 	voicings.push({ voicing:tab, data:data });
 
 	// console.log(tab, lastFret, cont);
-	return true === cont ? this.getVoicings(startFret, voicings) : voicings;
+	return true === cont ? this.getVoicingsCAGED(startFret, voicings) : voicings;
 
 };
