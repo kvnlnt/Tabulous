@@ -1,33 +1,14 @@
 var Tabulous = function(options){
 
-
-	// CONFIGS & ENUMS
-	this.TUNING = {
-
-		GUITAR:{
-			STANDARD:['e2','a2','d3','g3','b3','e4']
-		}, 
-
-		MANDOLIN: {
-			STANDARD:['g3','d4','a4','e5']
-		}
-
-	};
-
-	this.ALGORITHM = {
-		KORDFU:'KORDFU',
-		CHAIN:'CHAIN',
-	};
-
 	// DEFAULT OPTIONS
 
 	    var defaults       = {};
 	    defaults.root      = 'C';
-	    defaults.type      = 'maj11';
-	    defaults.tuning    = this.TUNING.GUITAR.STANDARD;
+	    defaults.type      = '';
+	    defaults.tuning    = ['e2','a2','d3','g3','b3','e4'];
 	    defaults.frets     = 24;
 	    defaults.span      = 5;
-	    defaults.algorithm = this.ALGORITHM.CHAIN;
+	    defaults.algorithm = 'CHAIN';
 
     // SETTINGS
     
