@@ -42,17 +42,17 @@ Tabulous.prototype.getNotes = function(chord){
 Tabulous.prototype.getVoicings = function(startingFret, voicings){
 
 	switch(this.settings.algorithm) {
-		case 'CAGED':
-			return this.getVoicingsCAGED(startingFret, voicings);
+		case 'KORDFU':
+			return this.getVoicingsCHAIN(startingFret, voicings);
 			break;
-		case 'EXHAUSTIVE':
-			return this.getVoicingsExhaustive(startingFret, voicings);
+		case 'CHAIN':
+			return this.getVoicingsCHAIN(startingFret, voicings);
 			break;
 	};
 
 };
 
-Tabulous.prototype.getVoicingsCAGED = function(startingFret, voicings){
+Tabulous.prototype.getVoicingsCHAIN = function(startingFret, voicings){
 
 	var voicings       = voicings || [];
 	var startingFret   = startingFret || 0;

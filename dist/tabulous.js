@@ -15,8 +15,8 @@ var Tabulous = function(options){
 	};
 
 	this.ALGORITHM = {
-		CAGED:'CAGED',
-		EXHAUSTIVE:'EXHAUSTIVE'
+		KORDFU:'KORDFU',
+		CHAIN:'CHAIN',
 	};
 
 	// DEFAULT OPTIONS
@@ -27,7 +27,7 @@ var Tabulous = function(options){
 	    defaults.tuning    = this.TUNING.GUITAR.STANDARD;
 	    defaults.frets     = 24;
 	    defaults.span      = 5;
-	    defaults.algorithm = this.ALGORITHM.CAGED;
+	    defaults.algorithm = this.ALGORITHM.CHAIN;
 
     // SETTINGS
     
@@ -81,17 +81,17 @@ Tabulous.prototype.getNotes = function(chord){
 Tabulous.prototype.getVoicings = function(startingFret, voicings){
 
 	switch(this.settings.algorithm) {
-		case 'CAGED':
-			return this.getVoicingsCAGED(startingFret, voicings);
+		case 'KORDFU':
+			return this.getVoicingsCHAIN(startingFret, voicings);
 			break;
-		case 'EXHAUSTIVE':
-			return this.getVoicingsExhaustive(startingFret, voicings);
+		case 'CHAIN':
+			return this.getVoicingsCHAIN(startingFret, voicings);
 			break;
 	};
 
 };
 
-Tabulous.prototype.getVoicingsCAGED = function(startingFret, voicings){
+Tabulous.prototype.getVoicingsCHAIN = function(startingFret, voicings){
 
 	var voicings       = voicings || [];
 	var startingFret   = startingFret || 0;
