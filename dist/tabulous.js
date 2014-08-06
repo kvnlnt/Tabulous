@@ -136,7 +136,7 @@ Tabulous.prototype.getVoicingsCHAIN = function(startingFret, voicings){
 	voicings.push({ voicing:tab, data:data });
 
 	// console.log(tab, lastFret, cont);
-	return true === cont ? this.getVoicingsCAGED(startFret, voicings) : voicings;
+	return true === cont ? this.getVoicingsCHAIN(startFret, voicings) : voicings;
 
 };
 ;Tabulous.prototype.setUp = function(){
