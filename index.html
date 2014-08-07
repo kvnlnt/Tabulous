@@ -9,14 +9,17 @@
     <script type="text/javascript" src="scripts/getters.js"></script>
     <script type="text/javascript" src="scripts/setters.js"></script>
     <script type="text/javascript" src="scripts/printers.js"></script>
+    <script type="text/javascript" src="scripts/calc.js"></script>
+    <script type="text/javascript" src="scripts/filters.js"></script>
 </head>
 
 <body>
     <h1>Tabulous</h1>
     <script type="text/javascript">
     // create instance
-    var tabulous = new Tabulous();
+    var tabulous = new Tabulous({ root:'D' });
     tabulous.printBoardChordNotes();
+    // tabulous.printVoicings();
     </script>
 </body>
 

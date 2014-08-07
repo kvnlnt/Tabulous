@@ -1,0 +1,121 @@
+TODO
+================================================================
+alt tunings don't work
+ostrich and dobro tuning freaks out
+d chords not right...might need condition for open chords, or just crawl every fret and remove unfingerables
+keep crawling for alternate frettings on open strings up to breadth of 5
+
+ALGORITHMS
+=================================================================
+
+Fret by Fret:
+
+	Search for notes by span, fret by fret
+
+Chained:
+	
+	search for notes by span, end to end
+
+CAGED:
+
+	search for notes by span, using caged method
+
+kordfu:
+
+	search for notes by span, using finger count method
+
+	S = starting fret
+	C = current fret
+	E = end fret
+	U = Fingers used
+
+	C = S
+	U = 0
+	while C < E
+
+		if C = S
+			if fretted U++
+		if C > S
+			if fretted
+				U + frettings grouped #strings played next to each other count as one)
+		C++
+
+		exit if U = 5 # we used all our fingers...stop
+
+TUNINGS
+======================================================================
+
+tunings:{
+	standard      :{ name:'EADGBE / Standard' 	   , value :['e2','a2','d3','g3','b3','e4'] },
+	drop_d        :{ name:'DADGBE / Drop D'   	   , value :['d2','a2','d3','g3','b3','e4'] },
+	double_drop_d :{ name:'DADGBD / Dbl Drop D'    , value :['d1','a1','d2','g2','b2','d3'] },
+	drop_c        :{ name:'CGCFAD / Drop C'        , value :['c1','g1','c2','f2','a2','d3'] },
+	open_d        :{ name:'DADF#AD / Open D'       , value :['d1','a1','d2','f#2','a2','d3'] },
+	open_d_minor  :{ name:'DADFAD / Open D majinor'  , value :['d1','a1','d2','f2','a2','d3'] },
+	open_g        :{ name:'DGDGBD / Open G'        , value :['d1','g1','d2','g2','b2','d3'] },
+	open_g_minor  :{ name:'DGDGA#D / Open G majinor' , value :['d1','g1','d2','g2','a#2','d3'] },
+	open_c        :{ name:'CGCGCE / Open C'        , value :['c1','g1','c2','g2','c3','e3'] },
+	open_c_minor  :{ name:'CGCGCD# / Open C majinor' , value :['c1','g1','c2','g2','c3','d#3'] },
+	open_e        :{ name:'EBEG#BE / Open E'       , value :['e1','b1','e2','g#2','b2','e3'] },
+	open_a        :{ name:'EAC#EA3 / Open A'       , value :['e1','a1','c#2','e2','a2','e3'] },
+	baritone      :{ name:'ADGCEA / Baritone'      , value :['a0','d1','g1','c2','e2','a2'] },
+	pentatonic    :{ name:'ACDEGA / Pentatonic'    , value :['a1','c2','d2','e2','g2','a3'] },
+	ostrich       :{ name:'DDDDDD / Ostrich'       , value :['d1','d2','d2','d2','d3','d3'] },
+	dobro         :{ name:'GBDGBD / Dobro'         , value :['g1','b1','d2','g2','b2','d3'] },
+	mando_guitar  :{ name:'CGDAEB / majandoguitar'   , value :['c1','g1','d2','a2','e3','b3'] },
+	rusty_cage    :{ name:'BADGBE / Rusty Cage'    , value :['b0','a1','d2','g2','b2','e3'] }
+}
+
+CHORD TYPES:
+======================================================================
+
+types:{
+	'1'  :{ name:'Major',    value: 'M' },
+	'2'  :{ name:'maj7',     value: 'maj7' },
+	'3'  :{ name:'maj9',     value: 'maj9' },
+	'4'  :{ name:'maj11',    value: 'maj11' },
+	'5'  :{ name:'maj13',    value: 'maj13' },
+	'8'  :{ name:'6',      value: '6' },
+	'9'  :{ name:'add9',   value: 'add9' },
+	'10' :{ name:'6add9',  value: '6add9' },
+	'11' :{ name:'maj7b5',   value: 'maj7b5' },
+	'12' :{ name:'maj7#5',   value: 'maj7#5' },
+	'13' :{ name:'minor',    value: 'm' },
+	'14' :{ name:'m7',       value: 'm7' },
+	'15' :{ name:'m9',       value: 'm9' },
+	'16' :{ name:'m11',      value: 'm11' },
+	'17' :{ name:'m13',      value: 'm13' },
+	'18' :{ name:'m6',       value: 'm6' },
+	'19' :{ name:'madd9',    value: 'madd9' },
+	'20' :{ name:'m6add9',   value: 'm6add9' },
+	'21' :{ name:'mmaj7',    value: 'mmaj7' },
+	'22' :{ name:'mmaj9',    value: 'mmaj9' },
+	'23' :{ name:'m7b5',     value: 'm7b5' },
+	'24' :{ name:'m7#5',     value: 'm7#5' },
+	'25' :{ name:'7',        value: '7' },
+	'26' :{ name:'9',        value: '9' },
+	'27' :{ name:'11', 		 value: '11' },
+	'28' :{ name:'13', 		 value: '13' },
+	'29' :{ name:'7sus4',    value: '7sus4' },
+	'30' :{ name:'7b5',      value: '7b5' },
+	'31' :{ name:'7#5',      value: '7#5' },
+	'32' :{ name:'7b9',      value: '7b9' },
+	'33' :{ name:'7#9',      value: '7#9' },
+	'34' :{ name:'7(b5,b9)', value: '7(b5,b9)' },
+	'35' :{ name:'7(b5,#9)', value: '7(b5,#9)' },
+	'36' :{ name:'7(#5,b9)', value: '7(#5,b9)' },
+	'37' :{ name:'7(#5,#9)', value: '7(#5,#9)' },
+	'38' :{ name:'9b5',      value: '9b5' },
+	'39' :{ name:'9#5',      value: '9#5' },
+	'40' :{ name:'13#11',    value: '13#11' },
+	'41' :{ name:'13b9',     value: '13b9' },
+	'42' :{ name:'11b9', 	 value: '11b9' },
+	'43' :{ name:'aug',      value: 'aug' },
+	'44' :{ name:'dim',      value: 'dim' },
+	'45' :{ name:'dim7',     value: 'dim7' },
+	'46' :{ name:'5',        value: '5' },
+	'47' :{ name:'sus4',     value: 'sus4' },
+	'48' :{ name:'sus2',     value: 'sus2' },
+	'49' :{ name:'sus2sus4', value: 'sus2sus4' },
+	'50' :{ name:'-5',       value: '-5' },
+}
