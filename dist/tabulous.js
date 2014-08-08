@@ -8,7 +8,7 @@ var Tabulous = function(options){
 	    defaults.tuning    = ['e2','a2','d3','g3','b3','e4'];
 	    defaults.frets     = 24;
 	    defaults.span      = 5;
-	    defaults.algorithm = 'CHAIN';
+	    defaults.algorithm = 'KORDFU';
 
     // SETTINGS
     
@@ -61,18 +61,48 @@ Tabulous.prototype.getNotes = function(chord){
 
 Tabulous.prototype.getVoicings = function(startingFret, voicings){
 
+	var population = this.calcPopulation();
+
 	switch(this.settings.algorithm) {
 		case 'KORDFU':
-			return this.getVoicingsCHAIN(startingFret, voicings);
-			break;
-		case 'CHAIN':
-			return this.getVoicingsCHAIN(startingFret, voicings);
+			return this.filterKORDFU(population);
 			break;
 	};
 
 };
 
-Tabulous.prototype.getVoicingsCHAIN = function(startingFret, voicings){
+;Tabulous.prototype.setUp = function(){
+
+	this.tuning   = this.getTuning();
+	this.board    = this.getBoard();
+	this.chord    = this.getChord();
+	this.notes    = this.getNotes();
+	this.voicings = this.getVoicings(0);
+
+};
+
+Tabulous.prototype.set = function(param, value){
+
+	this.settings[param] = value;
+	this.setUp();
+
+};;Tabulous.prototype.calcFingersUsed = function(tab){
+
+	var fingersUsed = 0;
+	var tab = _.chain(tab).compact().value().filter(function(t){ return t !== -1 });
+
+	_.each(tab, function(t, i){
+
+
+	});
+
+	console.log(tab, fingersUsed);
+
+	return fingersUsed;
+	
+};
+
+Tabulous.prototype.calcPopulation = function(startingFret, voicings){
 
 	var voicings       = voicings || [];
 	var startingFret   = startingFret || 0;
@@ -110,29 +140,71 @@ Tabulous.prototype.getVoicingsCHAIN = function(startingFret, voicings){
 	// var prevLastFret = Lazy(Lazy(voicings).last()).compact().sortBy().last(); // get last fret of prev tab
 	var prevLastFret = voicings.length > 0 ? _.chain(_.last(voicings).voicing).compact().sortBy().last().value() : 0;
 	var lastFret     = _.chain(tab).compact().sortBy().last().value() // get current last fret
-	var startFret    = prevLastFret < 12 && lastFret > 12 ? 12 : lastFret; // if we just passed the 12th fret, reset algo starting fret
+	var startFret    = startingFret + 1; // if we just passed the 12th fret, reset algo starting fret
 	var cont         = (startingFret + this.settings.span) < this.settings.frets; // continue if we have more frets to walk
 
 	// add tab
 	voicings.push({ voicing:tab, data:data });
 
-	// console.log(tab, lastFret, cont);
-	return true === cont ? this.getVoicingsCHAIN(startFret, voicings) : voicings;
+	return true === cont ? this.calcPopulation(startFret, voicings) : this.filterDupVoicings(voicings);
+
+};;Tabulous.prototype.filterDupVoicings = function(voicings){
+	
+	var uniqs = [];
+	var uniq_voicings = [];
+
+	_.each(voicings, function(voicing){
+		var found = void 0 === _.find(uniqs,voicing.voicing);
+		if(found){ 
+			uniqs.push(voicing.voicing);
+			uniq_voicings.push(voicing);
+		}
+	});
+
+	return uniq_voicings;
 
 };
-;Tabulous.prototype.setUp = function(){
 
-	this.tuning   = this.getTuning();
-	this.board    = this.getBoard();
-	this.chord    = this.getChord();
-	this.notes    = this.getNotes();
-	this.voicings = this.getVoicings(0);
+Tabulous.prototype.filterKORDFU = function(population){
 
-};
+	var filter = [];
 
-Tabulous.prototype.set = function(param, value){
+	// loop all voicings
+	_.each(population, function(voicing, i){
 
-	this.settings[param] = value;
-	this.setUp();
+		var fingersUsed           = 0;
+		var fretsCounted          = [];
+		var hasOpenOrMutedStrings = _.contains(voicing.voicing, 0) || _.contains(voicing.voicing, 1);
+		var voicingsFretted 	  = _.filter(voicing.voicing,function(v){ return v > 0 });
+		var firstFret             = voicingsFretted.sort()[0];
+
+		// loop frets
+		_.each(voicing.voicing, function(fret, j){
+			
+			var isFretted 				= !_.contains([0,-1],fret);
+			var numStringsFretted     	= _.filter(voicingsFretted, function(v){ return v === fret }).length;
+			var fretCounted 			= _.contains(fretsCounted, fret);
+
+			// finger counting logic
+			if(!fretCounted){
+				if(!hasOpenOrMutedStrings && firstFret === fret){ fingersUsed += 1; }
+				if(hasOpenOrMutedStrings && firstFret === fret){ fingersUsed += numStringsFretted }
+				if(firstFret !== fret){ fingersUsed += numStringsFretted }
+			}
+			
+			fretsCounted.push(fret);
+
+
+		});
+
+		if(fingersUsed <= 5) { 
+			filter.push(voicing);
+			// console.log(voicing.voicing, "fingersUsed=", fingersUsed, hasOpenOrMutedStrings);
+		}
+		
+
+	});
+
+	return filter;
 
 };
