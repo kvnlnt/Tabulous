@@ -43,8 +43,13 @@ Tabulous.prototype.getVoicings = function(startingFret, voicings){
 
 	var population = this.getPopulation();
 
-	this.printVoicings(population);
-	// dedup and clean
+	switch(this.settings.algorithm) {
+		case 'KORDFU':
+			this.printVoicings(this.filterKORDFU(population));
+			break;
+	};
+
+	
 	// mark inversions
 	// fitness function aka algorithm to pair down
 		// fingering position complexity heuristic (Heijink and Meulenbroek)...a set of heuristics is best

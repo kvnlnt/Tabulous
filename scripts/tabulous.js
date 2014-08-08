@@ -8,7 +8,7 @@ var Tabulous = function(options){
 	    defaults.tuning    = ['e2','a2','d3','g3','b3','e4'];
 	    defaults.frets     = 24;
 	    defaults.span      = 5;
-	    defaults.algorithm = 'CHAIN';
+	    defaults.algorithm = 'KORDFU';
 
     // SETTINGS
     
