@@ -15,6 +15,30 @@ Tabulous.prototype.filterDupVoicings = function(voicings){
 
 };
 
+Tabulous.prototype.filterInversions = function(voicings){
+
+	var that      = this;
+	var foundRoot = false;
+	var root      = that.settings.root.toLowerCase();
+
+	_.each(voicings, function(voicing){
+		_.each(voicing.data, function(note){
+
+			var curr_note = note.toString(true);
+			if(root === curr_note){ foundRoot = true; }
+			if(!foundRoot){ 
+				note.inverted = true; 
+			} else {
+				note.inverted = false;
+			}
+
+		});
+	});
+
+	return voicings;
+
+};
+
 Tabulous.prototype.filterKORDFU = function(population){
 
 	var filter = [];

@@ -1,19 +1,3 @@
-Tabulous.prototype.calcFingersUsed = function(tab){
-
-	var fingersUsed = 0;
-	var tab = _.chain(tab).compact().value().filter(function(t){ return t !== -1 });
-
-	_.each(tab, function(t, i){
-
-
-	});
-
-	console.log(tab, fingersUsed);
-
-	return fingersUsed;
-	
-};
-
 Tabulous.prototype.calcPopulation = function(startingFret, voicings){
 
 	var voicings       = voicings || [];
@@ -58,6 +42,9 @@ Tabulous.prototype.calcPopulation = function(startingFret, voicings){
 	// add tab
 	voicings.push({ voicing:tab, data:data });
 
-	return true === cont ? this.calcPopulation(startFret, voicings) : this.filterDupVoicings(voicings);
+	var noDupVoicings                = this.filterDupVoicings(voicings);
+	var labeledInvertedNotesVoicings = this.filterInversions(noDupVoicings);
+
+	return true === cont ? this.calcPopulation(startFret, voicings) : labeledInvertedNotesVoicings;
 
 };
