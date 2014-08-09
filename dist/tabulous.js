@@ -86,23 +86,7 @@ Tabulous.prototype.set = function(param, value){
 	this.settings[param] = value;
 	this.setUp();
 
-};;Tabulous.prototype.calcFingersUsed = function(tab){
-
-	var fingersUsed = 0;
-	var tab = _.chain(tab).compact().value().filter(function(t){ return t !== -1 });
-
-	_.each(tab, function(t, i){
-
-
-	});
-
-	console.log(tab, fingersUsed);
-
-	return fingersUsed;
-	
-};
-
-Tabulous.prototype.calcPopulation = function(startingFret, voicings){
+};;Tabulous.prototype.calcPopulation = function(startingFret, voicings){
 
 	var voicings       = voicings || [];
 	var startingFret   = startingFret || 0;
@@ -146,7 +130,10 @@ Tabulous.prototype.calcPopulation = function(startingFret, voicings){
 	// add tab
 	voicings.push({ voicing:tab, data:data });
 
-	return true === cont ? this.calcPopulation(startFret, voicings) : this.filterDupVoicings(voicings);
+	var noDupVoicings                = this.filterDupVoicings(voicings);
+	var labeledInvertedNotesVoicings = this.filterInversions(noDupVoicings);
+
+	return true === cont ? this.calcPopulation(startFret, voicings) : labeledInvertedNotesVoicings;
 
 };;Tabulous.prototype.filterDupVoicings = function(voicings){
 	
@@ -162,6 +149,30 @@ Tabulous.prototype.calcPopulation = function(startingFret, voicings){
 	});
 
 	return uniq_voicings;
+
+};
+
+Tabulous.prototype.filterInversions = function(voicings){
+
+	var that      = this;
+	var foundRoot = false;
+	var root      = that.settings.root.toLowerCase();
+
+	_.each(voicings, function(voicing){
+		_.each(voicing.data, function(note){
+
+			var curr_note = note.toString(true);
+			if(root === curr_note){ foundRoot = true; }
+			if(!foundRoot){ 
+				note.inverted = true; 
+			} else {
+				note.inverted = false;
+			}
+
+		});
+	});
+
+	return voicings;
 
 };
 
