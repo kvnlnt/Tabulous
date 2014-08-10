@@ -1,0 +1,9 @@
+[submodule "modules/jquery"]
+	path = modules/jquery
+	url = https://github.com/kvnlnt/jquery-2.1.2.git
+[submodule "modules/lodash"]
+	path = modules/lodash
+	url = https://github.com/lodash/lodash.git
+[submodule "modules/teoria"]
+	path = modules/teoria
+	url = https://github.com/kvnlnt/teoria.git
