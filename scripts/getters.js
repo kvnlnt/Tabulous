@@ -42,6 +42,8 @@ Tabulous.prototype.getNotes = function(chord){
 Tabulous.prototype.getVoicings = function(startingFret, voicings){
 
 	var population = this.calcPopulation();
+	var population = this.filterDupVoicings(population);
+	var population = this.filterInversions(population);
 
 	switch(this.settings.algorithm) {
 		case 'KORDFU':
