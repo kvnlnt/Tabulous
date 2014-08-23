@@ -48,12 +48,13 @@ Tabulous.prototype.filterKORDFU = function(population){
 
 		var fingersUsed           = 0;
 		var fretsCounted          = [];
-		var hasOpenOrMutedStrings = _.contains(voicing.voicing, 0) || _.contains(voicing.voicing, 1);
+		var hasOpenOrMutedStrings = _.contains(voicing.voicing, 0);
 		var voicingsFretted 	  = _.filter(voicing.voicing,function(v){ return v > 0 });
 		var firstFret             = voicingsFretted.sort()[0];
+		var voicingSorted         = voicing.voicing.slice(0);
 
 		// loop frets
-		_.each(voicing.voicing, function(fret, j){
+		_.each(voicingSorted, function(fret, j){
 			
 			var isFretted 				= !_.contains([0,-1],fret);
 			var numStringsFretted     	= _.filter(voicingsFretted, function(v){ return v === fret }).length;
@@ -62,7 +63,7 @@ Tabulous.prototype.filterKORDFU = function(population){
 			// finger counting logic
 			if(!fretCounted){
 				if(!hasOpenOrMutedStrings && firstFret === fret){ fingersUsed += 1; }
-				if(hasOpenOrMutedStrings && firstFret === fret){ fingersUsed += numStringsFretted }
+				if(hasOpenOrMutedStrings && firstFret === fret){ fingersUsed += numStringsFretted; }
 				if(firstFret !== fret){ fingersUsed += numStringsFretted }
 			}
 			
@@ -71,10 +72,11 @@ Tabulous.prototype.filterKORDFU = function(population){
 
 		});
 
-		if(fingersUsed <= 5) { 
+		if(fingersUsed <= 4) { 
 			filter.push(voicing);
-			// console.log(voicing.voicing, "fingersUsed=", fingersUsed, hasOpenOrMutedStrings);
 		}
+
+		// console.log(voicing.voicing, "fingersUsed=", fingersUsed, hasOpenOrMutedStrings);
 		
 
 	});
