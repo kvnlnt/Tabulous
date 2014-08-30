@@ -24,14 +24,19 @@ Tabulous.prototype.filterInversions = function(voicings){
 	_.each(voicings, function(voicing){
 		_.each(voicing.data, function(note){
 
-			var curr_note = note.toString(true);
-			var enharmonics = _.map(note.enharmonics(), function(enharmonic){ return enharmonic.toString(true); });
-			if(root === curr_note || _.contains(enharmonics, root)){ foundRoot = true; }
-			if(!foundRoot){ 
-				note.inverted = true; 
-			} else {
-				note.inverted = false;
+			if(null !== note){
+
+				var curr_note = note.toString(true);
+				var enharmonics = _.map(note.enharmonics(), function(enharmonic){ return enharmonic.toString(true); });
+				if(root === curr_note || _.contains(enharmonics, root)){ foundRoot = true; }
+				if(!foundRoot){ 
+					note.inverted = true; 
+				} else {
+					note.inverted = false;
+				}
+
 			}
+			
 
 		});
 	});
