@@ -39,17 +39,23 @@ Tabulous.prototype.getNotes = function(chord){
 
 };
 
-Tabulous.prototype.getVoicings = function(startingFret, voicings){
+Tabulous.prototype.getVoicings = function(){
 
-	var population = this.calcPopulation();
-	var population = this.filterDupVoicings(population);
-	var population = this.filterInversions(population);
+	var population = this.calcAllPossibleVoicings();
+	var nodups     = population = this.filterDupVoicings(population);
+	var playable   = this.filterPlayableChords(nodups);
+	var board      = this.board;
 
-	switch(this.settings.algorithm) {
-		case 'KORDFU':
-			return this.filterKORDFU(population);
-			break;
-	};
+	// loop data
+	// var data = _.map(playable, function(voicing){
+	// 	return {
+	// 		voicing:voicing
+	// 	}
+	// });
+
+	// console.log(data);
+
+	return playable;
 
 };
 
