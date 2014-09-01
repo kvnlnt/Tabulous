@@ -52,7 +52,9 @@ Tabulous.prototype.getVoicings = function(){
 		var tab = {};
 		tab.voicing = voicing;
 		tab.data = _.map(voicing, function(fret, string){
-			return board[fret][string];
+			var o = board[fret][string];
+			o.inverted = false;
+			return o;
 		});
 		data.push(tab);
 	});
