@@ -85,7 +85,7 @@ Tabulous.prototype.printVoicings = function(voicings) {
 	var voicings = voicings || this.voicings;
 
 	_.each(voicings, function(voicing){
-		console.log(voicing.toString());
+		console.log(voicing.voicing.toString());
 	});
 
 };

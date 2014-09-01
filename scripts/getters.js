@@ -45,17 +45,19 @@ Tabulous.prototype.getVoicings = function(){
 	var nodups     = population = this.filterDupVoicings(population);
 	var playable   = this.filterPlayableChords(nodups);
 	var board      = this.board;
+	var data       = [];
 
 	// loop data
-	// var data = _.map(playable, function(voicing){
-	// 	return {
-	// 		voicing:voicing
-	// 	}
-	// });
+	_.each(playable, function(voicing){
+		var tab = {};
+		tab.voicing = voicing;
+		tab.data = _.map(voicing, function(fret, string){
+			return board[fret][string];
+		});
+		data.push(tab);
+	});
 
-	// console.log(data);
-
-	return playable;
+	return data;
 
 };
 
