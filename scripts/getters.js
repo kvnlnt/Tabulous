@@ -42,24 +42,12 @@ Tabulous.prototype.getNotes = function(chord){
 Tabulous.prototype.getVoicings = function(){
 
 	var population = this.calcAllPossibleVoicings();
-	var nodups     = population = this.filterDupVoicings(population);
+	var nodups     = this.filterDupVoicings(population);
 	var playable   = this.filterPlayableChords(nodups);
-	var board      = this.board;
-	var data       = [];
+	var data       = this.assignData(playable);
+	var voicings   = this.assignDataLabels(data);
 
-	// loop data
-	_.each(playable, function(voicing){
-		var tab = {};
-		tab.voicing = voicing;
-		tab.data = _.map(voicing, function(fret, string){
-			var o = board[fret][string];
-			o.inverted = false;
-			return o;
-		});
-		data.push(tab);
-	});
-
-	return data;
+	return voicings;
 
 };
 
