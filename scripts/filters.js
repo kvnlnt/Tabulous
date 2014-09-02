@@ -3,13 +3,14 @@ Tabulous.prototype.filterPlayableChords = function(population){
 	var filter = [];
 
 	// loop all voicings
-	_.each(population, function(voicing, i){
+	_.each(population, function(p, i){
 
+		var voicing               = p.voicing;
 		var fingersUsed           = 0;
 		var fretsCounted          = [];
 		var hasOpenOrMutedStrings = _.contains(voicing, 0);
-		var voicingsFretted 	  = _.filter(voicing,function(v){ return v > 0 });
-		var firstFret             = voicingsFretted.sort()[0];
+		var voicingsFretted 	  = _.filter(voicing,function(v,vi){ return v > 0 && p.data[vi].active });
+		var firstFret             = _.sortBy(voicingsFretted)[0];
 		var voicingSorted         = voicing.slice(0);
 
 		// loop frets
@@ -32,12 +33,19 @@ Tabulous.prototype.filterPlayableChords = function(population){
 		});
 
 		if(fingersUsed <= 4) { 
-			filter.push(voicing);
-		}		
+			filter.push(p);
+			// console.log('playable', voicing, fingersUsed, p, p.data.toString());
+		} else {
+			// console.log('unplayable', voicing, fingersUsed, p, p.data.toString());
+		}
 
 	});
 
 	return filter;
+
+};
+
+Tabulous.prototype.filterUnplayable = function(){
 
 };
 
