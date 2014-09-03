@@ -9,8 +9,9 @@ Tabulous.prototype.assignData = function(voicings){
         var tab = {};
         tab.voicing = voicing;
         tab.data = _.map(voicing, function(fret, string){
-            var o = board[fret][string];
+            var o = board[fret][string] || {};
             o.isRoot = root === o.toString(true) ? true : false;
+            o.active = false;
             return o;
         });
         data.push(tab);
@@ -37,6 +38,8 @@ Tabulous.prototype.assignDataLabels = function(voicings){
         // assign index to start enabling notes
         var startActiveIndex = (stringCount - (firstRoot+1)) >= chordLength ? firstRoot : (stringCount - chordLength) - 1;
 
+        console.log('------------------------------------');
+
         _.each(voicing.data, function(note, i){
 
             if(null !== note){
@@ -44,6 +47,8 @@ Tabulous.prototype.assignDataLabels = function(voicings){
                 note.active = i >= startActiveIndex ? true : false;
 
             }
+
+            console.log(voicing.voicing, note.active, i);
 
         });
     });
