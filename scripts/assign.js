@@ -9,9 +9,11 @@ Tabulous.prototype.assignData = function(voicings){
         var tab = {};
         tab.voicing = voicing;
         tab.data = _.map(voicing, function(fret, string){
-            var o = board[fret][string] || {};
-            o.isRoot = root === o.toString(true) ? true : false;
-            o.active = false;
+            if(fret === 'X'){
+                var o = null;
+            } else {
+                var o = board[fret][string];
+            }
             return o;
         });
         data.push(tab);
@@ -35,22 +37,18 @@ Tabulous.prototype.assignDataLabels = function(voicings){
         // get which string index has the first occurance of the root
         var firstRoot = _.findIndex(voicing.data, function(note){ return note.toString(true) === root; });
 
-        // assign index to start enabling notes
-        var startActiveIndex = (stringCount - (firstRoot+1)) >= chordLength ? firstRoot : (stringCount - chordLength) - 1;
+        // assign active state
+        voicing.data = _.map(voicing.data, function(note, i){
 
-        console.log('------------------------------------');
+            var isActive = i >= firstRoot ? true : false;
+            var isRoot = root === note.toString(true) ? true : false;
+            var obj = { teoria:note, isRoot:isRoot, isActive:isActive };
 
-        _.each(voicing.data, function(note, i){
-
-            if(null !== note){
-
-                note.active = i >= startActiveIndex ? true : false;
-
-            }
-
-            console.log(voicing.voicing, note.active, i);
+            return obj;
 
         });
+
+
     });
 
     return voicings;
