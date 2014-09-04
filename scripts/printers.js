@@ -84,12 +84,17 @@ Tabulous.prototype.printVoicings = function(voicings) {
 
 	var voicings = voicings || this.voicings;
 
+	console.log("chord=", this.chord);
+	console.log("tuning=", this.tuning);
+	console.log("notes=", this.notes);
+
 	_.each(voicings, function(voicing){
 		// console.log(voicing.voicing.toString());
 		_.each(voicing.data,function(note, i){
-			console.log(i, voicing.voicing.toString(), note.isActive, note.toString());
+			// console.log(i, voicing.voicing.toString(), note.isActive, note);
 		});
-		console.log('----------------------------');
+		console.log(voicing.voicing, voicing);
+		// console.log('----------------------------');
 	});
 
 };

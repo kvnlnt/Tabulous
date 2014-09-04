@@ -44,10 +44,11 @@ Tabulous.prototype.getVoicings = function(){
 	var population = this.calcAllPossibleVoicings();
 	var nodups     = this.filterDupVoicings(population);
 	var data       = this.assignData(nodups);
-	var voicings   = this.assignDataLabels(data);
-	var playable   = this.filterPlayableChords(voicings);
+	var labels     = this.assignDataLabels(data);
+	var playable   = this.filterPlayableChords(labels);
+	var validate   = this.filterChordType(playable);
 
-	return playable;
+	return validate;
 
 };
 

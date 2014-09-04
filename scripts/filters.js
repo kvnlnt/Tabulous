@@ -45,7 +45,30 @@ Tabulous.prototype.filterPlayableChords = function(population){
 
 };
 
-Tabulous.prototype.filterUnplayable = function(){
+Tabulous.prototype.filterChordType = function(voicings){
+
+	var chordNotes       = _.map(this.notes, function(note){ return note.toString(true) });
+	var chordNotesChroma = _.map(this.notes, function(note){ return note.chroma() });
+
+	var validate = function(voicing){
+
+		var notesChroma = function(note){ return note.teoria.chroma(); };
+		var notesChroma = _.map(voicing.data, notesChroma);
+		var notes       = function(note){ return note.teoria.toString(true); };
+		var notes       = _.map(voicing.data, notes);
+		var diff        = _.difference(chordNotesChroma, notesChroma);
+		var isValid     = diff.length === 0;
+
+		// console.log(isValid, diff.length, voicing.voicing, chordNotes, notes);
+
+		return isValid
+
+	};
+
+	var validChordTypes = _.filter(voicings, validate);
+
+	return validChordTypes;
+
 
 };
 
