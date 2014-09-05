@@ -9,7 +9,7 @@ Tabulous.prototype.filterPlayableChords = function(population){
 		var fingersUsed           = 0;
 		var fretsCounted          = [];
 		var hasOpenOrMutedStrings = _.contains(voicing, 0);
-		var voicingsFretted 	  = _.filter(voicing,function(v,vi){ return v > 0 && p.data[vi].active });
+		var voicingsFretted 	  = _.filter(voicing,function(v,vi){ return v > 0 && p.data[vi].isActive });
 		var firstFret             = _.sortBy(voicingsFretted)[0];
 		var voicingSorted         = voicing.slice(0);
 
