@@ -40,7 +40,7 @@ Tabulous.prototype.assignDataLabels = function(voicings){
         // assign active state
         voicing.data = _.map(voicing.data, function(note, i){
 
-            var isActive = i >= firstRoot ? true : false;
+            var isActive = i >= firstRoot || i >= (stringCount-chordLength) ? true : false;
             var isRoot = root === note.toString(true) ? true : false;
             var obj = { teoria:note, isRoot:isRoot, isActive:isActive };
 
